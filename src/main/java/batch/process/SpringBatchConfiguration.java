@@ -20,7 +20,12 @@ import batch.process.dominio.Conta;
 import batch.process.job.ContaItemProcessor;
 import batch.process.job.ContaItemWriter;
 import batch.process.job.ContaReader;
+import batch.process.job.JobListener;
 import batch.process.job.ParametersValidator;
+import batch.process.job.StepItemProcessListener;
+import batch.process.job.StepItemReadListener;
+import batch.process.job.StepItemWriteListener;
+import batch.process.job.StepListener;
 
 @Configuration
 @EnableBatchProcessing
@@ -37,20 +42,25 @@ public class SpringBatchConfiguration {
 		return jobBuilderFactory
 				.get("jobConta")
 				.validator(validador())
+				.listener(new JobListener())
 				.incrementer(new RunIdIncrementer())
-				.start(step1())
+				.start(atualizarContas())
 				.build();
 	}
 
 
 	@Bean
-	public Step step1() {
+	public Step atualizarContas() {
 		return stepBuilderFactory
-					.get("step1")
-					.<Conta, Conta>chunk(2)
+					.get("atualizarContas")
+					.<Conta, Conta>chunk(10)
+					.listener(new StepItemReadListener())
 					.reader(reader(null))
 					.processor(processor())
+					.listener(new StepItemProcessListener())
 					.writer(writer(null))
+					.listener(new StepItemWriteListener())
+					.listener(new StepListener())
 					.build();
 	}
 

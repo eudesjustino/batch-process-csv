@@ -61,7 +61,7 @@ public class Conta implements Serializable {
 
 	@Override
 	public String toString() {
-		return super.toString();
+		return "[agencia = "+this.agencia+" ;conta = "+this.conta+" ;saldo = "+this.saldo+" ;status = "+this.status+" ;processado = "+this.processado+"]";
 	}
 
 }

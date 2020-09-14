@@ -25,6 +25,8 @@ public class ContaItemWriter extends FlatFileItemWriter<Conta>{
 	
 	public ContaItemWriter(String fileName) {
 		
+		setShouldDeleteIfExists(true);
+		
 		String diretorio = Paths.get(fileName).getParent().toString();
 		diretorio = diretorio.concat(STR).concat(FILE_OUTPUT);
 		
